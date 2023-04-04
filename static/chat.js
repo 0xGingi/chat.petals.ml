@@ -1,17 +1,10 @@
 const models = {
   "bigscience/bloomz-petals": {
-    name: "BLOOMZ-176B",
+    name: "bloomz-petals",
     href: "https://huggingface.co/bigscience/bloomz",
     sepToken: "\n\n",
     stopToken: "</s>",
     extraStopSequences: ["\n\nHuman"],
-  },
-  "bigscience/bloom-petals": {
-    name: "regular BLOOM-176B",
-    href: "https://huggingface.co/bigscience/bloom",
-    sepToken: "\n\n",
-    stopToken: "\n\n",
-    extraStopSequences: [],
   },
 };
 var curModel = "bigscience/bloomz-petals";
@@ -36,7 +29,7 @@ let current_mode = mode.CHATBOT;
 let stop = false;
 
 function openSession() {
-  ws = new WebSocket(`ws://${location.host}/api/v2/generate`);
+  ws = new WebSocket(`wss://${location.host}/api/v2/generate`);
   ws.onopen = () => {
     ws.send(JSON.stringify({type: "open_inference_session", model: curModel, max_length: sessionMaxLength}));
     ws.onmessage = event => {
